@@ -11,6 +11,9 @@ export PROJECT_ID="project-id"
 
 Change these values with the correct ones.
 
+You will need to create a firewall rule in your gcp console, that allow the traffic on ports 500 and 4500 on TCP and UDP protocols.
+To this firewall assign the tag, "vpn".
+
 After that you only need to run:
 
 ```bash

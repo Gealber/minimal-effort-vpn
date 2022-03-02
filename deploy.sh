@@ -16,7 +16,7 @@ LEN=$(echo ${#IP_ADDRESS})
 echo "IP_ADDRESS: $IP_ADDRESS"
 
 # Creating copy of old template
-template=$(cat vpn-vm.yaml)
+cp vpn-vm.yaml /tmp/vpn-vm.yaml
 
 # Substitute this IP and zone in deployment manager template
 sed -i "s/IP_ADDRESS/$IP_ADDRESS/g" vpn-vm.yaml
@@ -28,13 +28,13 @@ echo $sep
 echo "Creating deployment in deployment-manager"
 gcloud deployment-manager deployments create vpn-vm --config vpn-vm.yaml
 
-echo "Sleeping 2 minute on purpose..."
-sleep 2m
+echo "Sleeping 10 minute on purpose..."
+sleep 10m
 
 # Fetch the necessaries configuration files
 echo $sep
 echo "Exporting default vpnclient configuration"
-ssh ${USERNAME}@$IP_ADDRESS 'cd /home/${USERNAME} && sudo ikev2.sh --exportclient vpnclient'
+ssh -o "StrictHostKeyChecking no" ${USERNAME}@$IP_ADDRESS 'cd /home/${USERNAME} && sudo ikev2.sh --exportclient vpnclient'
 
 echo $sep
 echo "Copying files from remote vm"
@@ -49,7 +49,7 @@ openssl pkcs12 -in vpnclient.p12 -nocerts -nodes  -out vpnclient.key
 
 echo $sep
 echo "Restauring value of old template"
-echo $template > vpn-vm.yaml
+mv /tmp/vpn-vm.yaml vpn-vm.yaml
 
 echo $sep
 echo "DONE"
