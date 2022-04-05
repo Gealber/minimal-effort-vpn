@@ -22,6 +22,7 @@ cp vpn-vm.yaml /tmp/vpn-vm.yaml
 sed -i "s/IP_ADDRESS/$IP_ADDRESS/g" vpn-vm.yaml
 sed -i "s/ZONE/${ZONE}/g" vpn-vm.yaml
 sed -i "s/PROJECT_ID/${PROJECT_ID}/g" vpn-vm.yaml
+sed -i "s/USERNAME/${USERNAME}/g" vpn-vm.yaml
 
 # Deploy the deployment )
 echo $sep
@@ -30,6 +31,8 @@ gcloud deployment-manager deployments create vpn-vm --config vpn-vm.yaml
 
 echo "Sleeping 10 minute on purpose..."
 sleep 10m
+
+ssh-keygen -f "$HOME/.ssh/known_hosts" -R $IP_ADDRESS
 
 # Fetch the necessaries configuration files
 echo $sep

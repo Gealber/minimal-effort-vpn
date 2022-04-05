@@ -18,8 +18,10 @@ resources:
       - key: startup-script
         value: |
           curl -sL https://git.io/vpnquickstart -o vpn.sh && \
-          sudo sh vpn.sh && \ sudo echo " authby=rsa-sha1" >> /etc/ipsec.d/ikev2.conf && \ 
+          sudo sh vpn.sh && \ 
+          sudo echo "  authby=rsa-sha1" >> /etc/ipsec.d/ikev2.conf && \ 
           sudo service ipsec restart && \ 
+          cd /home/gulolio && \
           sudo ikev2.sh --exportclient vpnclient
     tags:
       items: ["vpn"]
